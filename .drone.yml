@@ -1,26 +1,25 @@
-workspace:
-  base: /go
-  path: src/github.com/Depado/dummy
+kind: pipeline
+name: default
 
-pipeline:
-  prerequisites:
+steps:
+  - name: prerequisites
     image: "golang:latest"
     commands:
       - go version
       - export GOPROXY="https://goproxy.io"
 
-  build:
+  - name: build
     image: "golang:latest"
     commands:
       - go build
 
-  linter:
+  - name: linter
     image: "golang:latest"
     commands:
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
       - golangci-lint run
 
-  docker:
+  - name: docker
     image: plugins/docker
     settings:
       repo: cnych/drone-k8s-demo
