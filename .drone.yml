@@ -19,6 +19,8 @@ steps:
     commands:
       - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+      - ls $GOPATH
+      - pwd
       - ls $GOPATH/pkg/mod
       - golangci-lint run
 
@@ -30,7 +32,7 @@ steps:
     settings:
       repo: cnych/drone-k8s-demo
       use_cache: true
-      cache_from: cnych/drone-k8s-demo
+      # cache_from: cnych/drone-k8s-demo
       username:
         from_secret: docker_username
       password:
