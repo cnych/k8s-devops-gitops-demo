@@ -14,7 +14,7 @@ pipeline:
     commands:
       - go build
 
- linter:
+  linter:
     image: "golang:latest"
     commands:
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
@@ -28,4 +28,3 @@ pipeline:
         from_secret: docker_username
       password:
         from_secret: docker_password
-
