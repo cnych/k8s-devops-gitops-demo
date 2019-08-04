@@ -1,13 +1,15 @@
 FROM golang:latest AS build
 RUN mkdir -p drone-k8s
-ADD . drone-k8s
 WORKDIR drone-k8s
+RUN ls -la
+ADD . drone-k8s
 RUN export GOPROXY="https://goproxy.io" && CGO_ENABLED=0 go build -o /demo-app
 
 FROM alpine
-
 WORKDIR /home
 
+RUN echo http://mirrors.ustc.edu.cn/alpine/v3.6/main > /etc/apk/repositories && \
+  echo http://mirrors.ustc.edu.cn/alpine/v3.6/community >> /etc/apk/repositories
 RUN apk update && \
   apk upgrade && \
   apk add ca-certificates && update-ca-certificates && \
