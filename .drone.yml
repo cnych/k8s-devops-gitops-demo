@@ -20,3 +20,12 @@ pipeline:
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
       - golangci-lint run
 
+  docker:
+  image: plugins/docker
+  settings:
+    repo: cnych/drone-k8s-demo
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+
