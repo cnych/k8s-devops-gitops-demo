@@ -2,17 +2,10 @@ kind: pipeline
 name: default
 
 steps:
-  - name: build
-    image: "golang:latest"
-    commands:
-      - go version
-      - export GOPROXY="https://goproxy.io"
-      - echo $GOPROXY
-      - go build
-
   - name: linter
     image: "golang:latest"
     commands:
+      - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
       - golangci-lint run
 
