@@ -2,6 +2,14 @@ kind: pipeline
 name: default
 
 steps:
+  - name: prepare
+    image: busybox
+    commands:
+      - mkdir -p /cache/${DRONE_REPO}/docker
+    volumes:
+      - name: cache
+        path: /cache
+
   - name: linter
     image: "golang:latest"
     commands:
@@ -12,10 +20,20 @@ steps:
   - name: docker
     image: plugins/docker
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - name: docker
+        path: /var/lib/docker
     settings:
       repo: cnych/drone-k8s-demo
+      use_cache: true
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
+
+volumes:
+  - name: cache
+    host:
+      path: /var/cache
+  - name: docker
+    host:
+      path: /var/cache/${DRONE_REPO}/docker
