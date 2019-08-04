@@ -15,7 +15,7 @@ steps:
     image: "golang:latest"
     volumes:
       - name: gomod
-        path: $GOPATH/pkg/mod
+        path: /drone/src/pkg/mod
     commands:
       - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
@@ -25,7 +25,7 @@ steps:
       - golangci-lint run
 
   - name: docker
-    image: plugin/docker
+    image: plugins/docker
     volumes:
       - name: docker
         path: /var/lib/docker
