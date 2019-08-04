@@ -24,11 +24,11 @@ steps:
         path: /var/lib/docker
     settings:
       repo: cnych/drone-k8s-demo
-      use_cache: true
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
+      use_cache: true
 
 volumes:
   - name: cache
