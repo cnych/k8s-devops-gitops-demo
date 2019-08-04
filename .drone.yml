@@ -2,38 +2,29 @@ kind: pipeline
 name: default
 
 steps:
-  - name: prepare
-    image: busybox
-    commands:
-      - mkdir -p /cache/${DRONE_REPO}/docker
-    volumes:
-      - name: cache
-        path: /cache
-
   - name: linter
     image: "golang:latest"
     commands:
       - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+      - ls $GOPATH/pkg
       - golangci-lint run
 
   - name: docker
-    image: plugins/docker
+    image: "docker:latest"
     volumes:
-      - name: docker
-        path: /var/lib/docker
+      - name: dockersock
+        path: /var/run/docker.sock
     settings:
       repo: cnych/drone-k8s-demo
       use_cache: true
+      cache_from: cnych/drone-k8s-demo
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
 
 volumes:
-  - name: cache
+  - name: dockersock
     host:
-      path: /var/cache
-  - name: docker
-    host:
-      path: /var/cache/${DRONE_REPO}/docker
+      path: /var/run/docker.sock
