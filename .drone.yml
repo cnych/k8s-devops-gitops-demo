@@ -2,20 +2,20 @@ kind: pipeline
 name: default
 
 steps:
-  - name: prepare
-    image: busybox
-    commands:
-      - mkdir -p /cache/${DRONE_REPO}/gomod
-      - mkdir -p /cache/${DRONE_REPO}/docker
-    volumes:
-      - name: cache
-        path: /cache
+  # - name: prepare
+  #   image: busybox
+  #   commands:
+  #     # - mkdir -p /cache/${DRONE_REPO}/gomod
+  #     - mkdir -p /cache/${DRONE_REPO}/docker
+  #   volumes:
+  #     - name: cache
+  #       path: /cache
 
   - name: linter
     image: "golang:latest"
-    volumes:
-      - name: gomod
-        path: /drone/src/pkg/mod
+    # volumes:
+    #   - name: gomod
+    #     path: /drone/src/pkg/mod
     commands:
       - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
@@ -24,30 +24,49 @@ steps:
       - ls $GOPATH/pkg/mod
       - golangci-lint run
 
-  - name: docker
-    image: plugins/docker
-    volumes:
-      - name: docker
-        path: /var/lib/docker
-    settings:
-      repo: cnych/drone-k8s-demo
-      # use_cache: true
-      # cache_from: cnych/drone-k8s-demo
-      username:
+  - name: build
+    image: docker:dind
+    privileged: true
+    environment:
+      DOCKER_HOST:
+        unix:///var/run/host.sock
+      docker_username:
         from_secret: docker_username
-      password:
+      docker_password:
         from_secret: docker_password
+      docker_repo: cnych/drone-k8s-demo
+    commands:
+      - docker login -u $docker_username -p $docker_password
+      - docker build -t $docker_repo .
+      - docker push $docker_repo
+    volumes:
+      - name: dockersock
+        path: /var/run/host.sock
+
+  # - name: docker
+  #   image: plugins/docker
+  #   volumes:
+  #     - name: docker
+  #       path: /var/lib/docker
+  #   settings:
+  #     repo: cnych/drone-k8s-demo
+  #     # use_cache: true
+  #     # cache_from: cnych/drone-k8s-demo
+  #     username:
+  #       from_secret: docker_username
+  #     password:
+  #       from_secret: docker_password
 
 volumes:
-  - name: cache
+  - name: dockersock
     host:
-      path: /var/cache
-  - name: docker
-    host:
-      path: /var/cache/${DRONE_REPO}/docker
-  - name: gomod
-    host:
-      path: /var/cache/${DRONE_REPO}/gomod
-  # - name: dockersock
+      path: /var/run/docker.sock
+  # - name: cache
   #   host:
-  #     path: /var/run/docker.sock
+  #     path: /var/cache
+  # - name: docker
+  #   host:
+  #     path: /var/cache/${DRONE_REPO}/docker
+  # - name: gomod
+  #   host:
+  #     path: /var/cache/${DRONE_REPO}/gomod
