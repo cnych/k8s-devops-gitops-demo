@@ -1,7 +1,7 @@
 FROM golang:latest AS build
 RUN mkdir -p drone-k8s
-WORKDIR drone-k8s
 ADD . drone-k8s
+WORKDIR drone-k8s
 RUN ls -la
 RUN export GOPROXY="https://goproxy.io" && CGO_ENABLED=0 go build -o /demo-app
 
