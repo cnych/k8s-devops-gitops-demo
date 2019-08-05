@@ -2,29 +2,22 @@ kind: pipeline
 name: default
 
 steps:
-  # - name: prepare
-  #   image: busybox
-  #   commands:
-  #     # - mkdir -p /cache/${DRONE_REPO}/gomod
-  #     - mkdir -p /cache/${DRONE_REPO}/docker
-  #   volumes:
-  #     - name: cache
-  #       path: /cache
-
   - name: linter
-    image: "golang:latest"
-    # volumes:
-    #   - name: gomod
-    #     path: /drone/src/pkg/mod
+    image: golang:latest
+    environment:
+      GOPROXY: https://mirrors.aliyun.com/goproxy/
     commands:
-      - export GOPROXY="https://goproxy.io"
       - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-      - ls $GOPATH
-      - pwd
-      - ls $GOPATH/pkg/mod
       - golangci-lint run
 
   - name: build
+    image: golang:latest
+    environment:
+      GOPROXY: https://mirrors.aliyun.com/goproxy/
+    commands:
+      - CGO_ENABLED=0 go build -o demo-app
+
+  - name: docker
     image: docker:dind
     privileged: true
     environment:
@@ -37,7 +30,7 @@ steps:
       docker_repo: cnych/drone-k8s-demo
     commands:
       - docker login -u $docker_username -p $docker_password
-      - docker build -t $docker_repo .
+      - docker build --cache-from $docker_repo -t $docker_repo .
       - docker push $docker_repo
     volumes:
       - name: dockersock
