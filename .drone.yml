@@ -17,48 +17,13 @@ steps:
     commands:
       - CGO_ENABLED=0 go build -o demo-app
 
-  # - name: docker
-  #   image: docker:dind
-  #   environment:
-  #     DOCKER_HOST:
-  #       unix:///var/run/host.sock
-  #     docker_username:
-  #       from_secret: docker_username
-  #     docker_password:
-  #       from_secret: docker_password
-  #     docker_repo: cnych/drone-k8s-demo
-  #   commands:
-  #     - docker login -u $docker_username -p $docker_password
-  #     - docker build --cache-from $docker_repo -t $docker_repo .
-  #     - docker push $docker_repo
-  #   volumes:
-  #     - name: dockersock
-  #       path: /var/run/host.sock
-
   - name: docker
     image: plugins/docker
-    # volumes:
-    #   - name: docker
-    #     path: /var/lib/docker
     settings:
       repo: cnych/drone-k8s-demo
-      # use_cache: true
-      # cache_from: cnych/drone-k8s-demo
+      use_cache: true
+      cache_from: cnych/drone-k8s-demo
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-
-# volumes:
-#   - name: dockersock
-#     host:
-#       path: /var/run/docker.sock
-  # - name: cache
-  #   host:
-  #     path: /var/cache
-  # - name: docker
-  #   host:
-  #     path: /var/cache/${DRONE_REPO}/docker
-  # - name: gomod
-  #   host:
-  #     path: /var/cache/${DRONE_REPO}/gomod
