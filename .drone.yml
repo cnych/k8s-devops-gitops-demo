@@ -27,3 +27,27 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+    tags:
+      - latest
+      - "${DRONE_COMMIT_SHA}"
+    when:
+      event: push
+      branch: master
+
+  - name: tagged
+    image: plugins/docker
+    settings:
+      repo: cnych/drone-k8s-demo
+      use_cache: true
+      cache_from: cnych/drone-k8s-demo
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    tags:
+      - "${DRONE_TAG##v}"
+      - "${DRONE_COMMIT_SHA}"
+      - latest
+    when:
+      event: tag
+      branch: master
