@@ -34,12 +34,12 @@ steps:
       event: push
       branch: master
 
-  - name: tagged
+  - name: release
     image: plugins/docker
     settings:
       repo: cnych/drone-k8s-demo
       use_cache: true
-      cache_from: cnych/drone-k8s-demo
+      # cache_from: cnych/drone-k8s-demo
       username:
         from_secret: docker_username
       password:
