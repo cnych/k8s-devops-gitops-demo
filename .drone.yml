@@ -39,17 +39,17 @@ steps:
   - name: deploy
     image: quay.io/ipedrazas/drone-helm
     environment:
+      STABLE_REPO_URL: https://mirror.azure.cn/kubernetes/charts/
       KUBE_CONFIG:
         from_secret: kube_config
     skip_tls_verify: true
-    chart: ./helm
-    release: "drk8d"
+    client-only: true
     wait: true
     recreate_pods: true
+    chart: ./helm
+    release: "drk8d"
     values_files: ["helm/my-values.yml"]
     namespace: kube-ops
-    client-only: true
-    # stable_repo_url: https://mirror.azure.cn/kubernetes/charts/
     when:
       event: push
       branch: master
