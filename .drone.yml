@@ -53,7 +53,7 @@ steps:
       recreate_pods: true
       chart: ./helm
       release: drk8d
-      values_files: ["./helm/my-values.yml"]
+      values_files: ["./helm/my-values.yaml"]
       namespace: kube-ops
     when:
       event: push
