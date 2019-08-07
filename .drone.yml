@@ -47,13 +47,14 @@ steps:
         from_secret: kubernetes_token
       KUBERNETES_CERTIFICATE:
         from_secret: kubernetes_ca
-    client-only: true
-    wait: true
-    recreate_pods: true
-    chart: ./helm
-    release: drk8d
-    values_files: ["helm/my-values.yml"]
-    namespace: kube-ops
+    settings:
+      client-only: true
+      wait: true
+      recreate_pods: true
+      chart: ./helm
+      release: drk8d
+      values_files: ["helm/my-values.yml"]
+      namespace: kube-ops
     when:
       event: push
       branch: master
