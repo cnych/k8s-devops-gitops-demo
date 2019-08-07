@@ -48,6 +48,7 @@ steps:
     recreate_pods: true
     values_files: ["helm/my-values.yml"]
     namespace: kube-ops
+    stable_repo_url: https://mirror.azure.cn/kubernetes/charts/
     when:
       event: push
       branch: master
