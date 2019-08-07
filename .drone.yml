@@ -14,8 +14,11 @@ steps:
     image: golang:latest
     environment:
       GOPROXY: https://mirrors.aliyun.com/goproxy/
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
     commands:
-      - CGO_ENABLED=0 go build -o demo-app
+      - go build -o demo-app
 
   - name: docker
     image: plugins/docker
@@ -39,10 +42,7 @@ steps:
     chart: ./helm
     release: "drk8d"
     values_files: ["helm/my-values.yml"]
-    api_server:
-      from_secret: api_server
-    kubernetes_token:
-      from_secret: kubernetes_token
+    secrets: [api_server, kubernetes_token]
     namespace: kube-ops
     when:
       event: push
