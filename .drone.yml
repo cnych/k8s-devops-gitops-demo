@@ -39,10 +39,8 @@ steps:
   - name: deploy
     image: quay.io/ipedrazas/drone-helm
     environment:
-      API_SERVER:
-        from_secret: api_server
-      KUBERNETES_TOKEN:
-        from_secret: kubernetes_token
+      KUBE_CONFIG:
+        from_secret: kube_config
     skip_tls_verify: true
     chart: ./helm
     release: "drk8d"
