@@ -38,11 +38,17 @@ steps:
 
   - name: deploy
     image: quay.io/ipedrazas/drone-helm
+    environment:
+      API_SERVER:
+        from_secret: api_server
+      KUBERNETES_TOKEN:
+        from_secret: kubernetes_token
     skip_tls_verify: true
     chart: ./helm
     release: "drk8d"
+    wait: true
+    recreate_pods: true
     values_files: ["helm/my-values.yml"]
-    secrets: [api_server, kubernetes_token]
     namespace: kube-ops
     when:
       event: push
