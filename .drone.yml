@@ -37,8 +37,12 @@ steps:
     image: quay.io/ipedrazas/drone-helm
     skip_tls_verify: true
     chart: ./helm
-    release: "staging"
+    release: "drk8d"
     values_files: ["helm/my-values.yml"]
+    api_server:
+      from_secret: api_server
+    kubernetes_token:
+      from_secret: kubernetes_token
     namespace: kube-ops
     when:
       event: push
