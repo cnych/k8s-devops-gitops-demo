@@ -40,14 +40,18 @@ steps:
     image: quay.io/ipedrazas/drone-helm
     environment:
       STABLE_REPO_URL: https://mirror.azure.cn/kubernetes/charts/
-      KUBE_CONFIG:
-        from_secret: kube_config
-    skip_tls_verify: true
+    api_server:
+      from_secret: api_server
+    token:
+      from_secret: kubernetes_token
+    certificate:
+      from_secret: kubernetes_ca
     client-only: true
     wait: true
     recreate_pods: true
+    service-account: tiller
     chart: ./helm
-    release: "drk8d"
+    release: drk8d
     values_files: ["helm/my-values.yml"]
     namespace: kube-ops
     when:
