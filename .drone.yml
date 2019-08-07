@@ -28,25 +28,36 @@ steps:
         from_secret: docker_password
     tags:
       - latest
-      - ${DRONE_COMMIT_SHA:0:8}
+      # - ${DRONE_COMMIT_SHA:0:8}
     when:
       event: push
       branch: master
 
-  - name: release
-    image: plugins/docker
-    settings:
-      repo: cnych/drone-k8s-demo
-      # use_cache: true
-      # cache_from: cnych/drone-k8s-demo
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-    tags:
-      - ${DRONE_TAG##v}
-      - ${DRONE_COMMIT_SHA:0:8}
-      - latest
+  - name: deploy
+    image: quay.io/ipedrazas/drone-helm
+    skip_tls_verify: true
+    chart: ./helm
+    release: "staging"
+    values_files: ["helm/my-values.yml"]
+    namespace: kube-ops
     when:
-      event: tag
+      event: push
       branch: master
+
+  # - name: release
+  #   image: plugins/docker
+  #   settings:
+  #     repo: cnych/drone-k8s-demo
+  #     # use_cache: true
+  #     # cache_from: cnych/drone-k8s-demo
+  #     username:
+  #       from_secret: docker_username
+  #     password:
+  #       from_secret: docker_password
+  #   tags:
+  #     - ${DRONE_TAG##v}
+  #     - ${DRONE_COMMIT_SHA:0:8}
+  #     - latest
+  #   when:
+  #     event: tag
+  #     branch: master

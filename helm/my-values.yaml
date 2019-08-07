@@ -1,0 +1,20 @@
+image:
+  repository: cnych/drone-k8s-demo
+  tag: latest
+  pullPolicy: Always
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  path: /
+  hosts:
+    - drone-k8s-demo.local
+
+resources:
+  limits:
+    cpu: 50m
+    memory: 128Mi
+  requests:
+    cpu: 50m
+    memory: 128Mi
