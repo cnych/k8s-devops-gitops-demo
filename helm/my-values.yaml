@@ -1,5 +1,5 @@
 image:
-  repository: cnych/drone-k8s-demo
+  repository: cnych/devops-demo
   tag: latest
   pullPolicy: Always
 
@@ -9,7 +9,7 @@ ingress:
     kubernetes.io/ingress.class: nginx
   path: /
   hosts:
-    - drone-k8s-demo.local
+    - devops-demo.k8s.local
 
 resources:
   limits:

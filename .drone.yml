@@ -23,7 +23,7 @@ steps:
   - name: docker
     image: plugins/docker
     settings:
-      repo: cnych/drone-k8s-demo
+      repo: cnych/devops-demo
       use_cache: true
       username:
         from_secret: docker_username
@@ -62,9 +62,9 @@ steps:
   # - name: release
   #   image: plugins/docker
   #   settings:
-  #     repo: cnych/drone-k8s-demo
+  #     repo: cnych/devops-demo
   #     # use_cache: true
-  #     # cache_from: cnych/drone-k8s-demo
+  #     # cache_from: cnych/devops-demo
   #     username:
   #       from_secret: docker_username
   #     password:

@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "drone-k8s-demo.fullname" . }}
+  name: {{ include "devops-demo.fullname" . }}
   labels:
-    app: {{ include "drone-k8s-demo.name" . }}
-    chart: {{ include "drone-k8s-demo.chart" . }}
+    app: {{ include "devops-demo.name" . }}
+    chart: {{ include "devops-demo.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ include "drone-k8s-demo.name" . }}
+    app: {{ include "devops-demo.name" . }}
     release: {{ .Release.Name }}

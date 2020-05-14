@@ -1,13 +1,13 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "drone-k8s-demo.fullname" . -}}
+{{- $fullName := include "devops-demo.fullname" . -}}
 {{- $ingressPath := .Values.ingress.path -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app: {{ include "drone-k8s-demo.name" . }}
-    chart: {{ include "drone-k8s-demo.chart" . }}
+    app: {{ include "devops-demo.name" . }}
+    chart: {{ include "devops-demo.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 {{- with .Values.ingress.annotations }}
