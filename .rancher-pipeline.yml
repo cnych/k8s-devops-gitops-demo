@@ -3,22 +3,7 @@ stages:
   steps:
   - runScriptConfig:
       image: maven:v1
-      shellScript: mvn clean package
-- name: publish
-  steps:
-  - publishImageConfig:
-      dockerfilePath: ./Dockerfile
-      buildContext: .
-      tag: gsafety/demo:v3
-      pushRemote: true
-      registry: 10.3.10.131:5000
-    env:
-      PLUGIN_DEBUG: "true"
-      PLUGIN_INSECURE: "true"
-- name: deploy
-  steps:
-  - applyYamlConfig:
-      path: ./deployment.yaml
+      shellScript: echo "project compile
 timeout: 60
 branch:
   include:
