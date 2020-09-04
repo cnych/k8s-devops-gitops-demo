@@ -3,7 +3,7 @@ stages:
   steps:
   - runScriptConfig:
       image: maven:v1
-      shellScript: echo "project compile
+      shellScript: echo "project compile"
 timeout: 60
 branch:
   include:
