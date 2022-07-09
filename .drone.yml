@@ -1,0 +1,78 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: linter
+    image: golang:latest
+    environment:
+      GOPROXY: https://mirrors.aliyun.com/goproxy/
+    commands:
+      - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+      - golangci-lint run
+
+  - name: build
+    image: golang:latest
+    environment:
+      GOPROXY: https://mirrors.aliyun.com/goproxy/
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
+    commands:
+      - go build -o demo-app
+
+  - name: docker
+    image: plugins/docker
+    settings:
+      repo: cnych/devops-demo
+      use_cache: true
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    tags:
+      - latest
+      # - ${DRONE_COMMIT_SHA:0:8}
+    when:
+      event: push
+      branch: master
+
+  - name: deploy
+    image: quay.io/ipedrazas/drone-helm
+    environment:
+      STABLE_REPO_URL: https://mirror.azure.cn/kubernetes/charts/
+      SERVICE_ACCOUNT: tiller
+      API_SERVER:
+        from_secret: api_server
+      KUBERNETES_TOKEN:
+        from_secret: kubernetes_token
+      KUBERNETES_CERTIFICATE:
+        from_secret: kubernetes_ca
+    settings:
+      client-only: true
+      wait: true
+      recreate_pods: true
+      chart: ./helm
+      release: drk8d
+      values_files: ["./helm/my-values.yaml"]
+      namespace: kube-ops
+    when:
+      event: push
+      branch: master
+
+  # - name: release
+  #   image: plugins/docker
+  #   settings:
+  #     repo: cnych/devops-demo
+  #     # use_cache: true
+  #     # cache_from: cnych/devops-demo
+  #     username:
+  #       from_secret: docker_username
+  #     password:
+  #       from_secret: docker_password
+  #   tags:
+  #     - ${DRONE_TAG##v}
+  #     - ${DRONE_COMMIT_SHA:0:8}
+  #     - latest
+  #   when:
+  #     event: tag
+  #     branch: master

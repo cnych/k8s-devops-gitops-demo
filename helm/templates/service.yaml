@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "devops-demo.fullname" . }}
+  labels:
+    app: {{ include "devops-demo.name" . }}
+    chart: {{ include "devops-demo.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ include "devops-demo.name" . }}
+    release: {{ .Release.Name }}
