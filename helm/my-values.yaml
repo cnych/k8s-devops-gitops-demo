@@ -5,8 +5,7 @@ image:
 
 ingress:
   enabled: true
-  annotations:
-    kubernetes.io/ingress.class: nginx
+  ingressClassName: nginx
   path: /
   hosts:
     - devops-demo.k8s.local
