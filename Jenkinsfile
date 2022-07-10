@@ -29,8 +29,11 @@ podTemplate(label: label, containers: [
     }
     stage('运行 Kubectl') {
       container('kubectl') {
-        echo "查看 K8S 集群 Pod 列表"
-        sh "kubectl get pods"
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+          echo "查看 K8S 集群 Pod 列表"
+          sh "mkdir -p ~/.kube && cp ${KUBECONFIG} ~/.kube/config"
+          sh "kubectl get pods"
+        }
       }
     }
   }
