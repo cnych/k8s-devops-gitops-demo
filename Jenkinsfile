@@ -4,9 +4,7 @@ podTemplate(label: label, containers: [
   containerTemplate(name: 'golang', image: 'golang:1.18.3-alpine3.16', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker:latest', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'kubectl', image: 'cnych/kubectl', command: 'cat', ttyEnabled: true)
-], serviceAccount: 'jenkins', volumes: [
-  hostPathVolume(mountPath: '/home/jenkins/.kube', hostPath: '/root/.kube')
-], envVars: [
+], serviceAccount: 'jenkins', envVars: [
   envVar(key: 'DOCKER_HOST', value: 'tcp://docker-dind:2375')  // 环境变量
 ]) {
   node(label) {
