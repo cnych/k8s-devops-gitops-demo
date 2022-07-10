@@ -1,5 +1,5 @@
 image:
-  repository: harbor.k8s.local/devops-demo
+  repository: harbor.k8s.local/course/devops-demo
   tag: latest
   pullPolicy: IfNotPresent
 
