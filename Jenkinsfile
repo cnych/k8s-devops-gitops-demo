@@ -1,13 +1,5 @@
 def label = "slave-${UUID.randomUUID().toString()}"
 
-// 获取 git commit id 作为镜像标签
-def imageTag = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-// 仓库地址
-def registryUrl = "harbor.k8s.local"
-def imageEndpoint = "course/devops-demo"
-// 镜像
-def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
-
 podTemplate(label: label, containers: [
   containerTemplate(name: 'golang', image: 'golang:1.18.3-alpine3.16', command: 'cat', ttyEnabled: true),
   containerTemplate(name: 'docker', image: 'docker:latest', command: 'cat', ttyEnabled: true),
@@ -19,6 +11,14 @@ podTemplate(label: label, containers: [
     def myRepo = checkout scm
     def gitCommit = myRepo.GIT_COMMIT
     def gitBranch = myRepo.GIT_BRANCH
+
+    // 获取 git commit id 作为镜像标签
+    def imageTag = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
+    // 仓库地址
+    def registryUrl = "harbor.k8s.local"
+    def imageEndpoint = "course/devops-demo"
+    // 镜像
+    def image = "${registryUrl}/${imageEndpoint}:${imageTag}"
 
     stage('单元测试') {
       echo "1.测试阶段"
