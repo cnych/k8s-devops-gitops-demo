@@ -1,7 +1,7 @@
 image:
-  repository: cnych/devops-demo
+  repository: harbor.k8s.local/devops-demo
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 ingress:
   enabled: true
