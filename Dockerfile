@@ -1,4 +1,4 @@
-FROM alpine
+FROM dockerproxy.com/library/alpine:3.16.2
 WORKDIR /home
 
 # 修改alpine源为阿里云
