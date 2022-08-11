@@ -12,7 +12,7 @@ func main() {
 
   r.GET("/", func(c *gin.Context) {
     c.JSON(http.StatusOK, gin.H {
-      "msg": "Hello DevOps(Tekton) On Kubernetes",
+      "msg": "Hello Tekton On Kubernetes",
     })
   })
 
