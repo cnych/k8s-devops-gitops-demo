@@ -2,6 +2,8 @@ image:
   repository: cnych/devops-demo
   tag: latest
   pullPolicy: IfNotPresent
+  imagePullSecrets:
+    - name: docker-auth
 
 ingress:
   enabled: true
