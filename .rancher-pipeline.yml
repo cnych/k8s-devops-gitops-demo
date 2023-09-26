@@ -1,0 +1,11 @@
+stages:
+- name: compile
+  steps:
+  - runScriptConfig:
+      image: maven:v1
+      shellScript: echo "project compile"
+timeout: 60
+branch:
+  include:
+  - master
+notification: {}
