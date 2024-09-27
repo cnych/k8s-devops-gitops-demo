@@ -1,9 +1,9 @@
 image:
-  repository: cnych/devops-demo
+  repository: ghcr.io/cnych/gitops-demo
   tag: latest
   pullPolicy: IfNotPresent
   imagePullSecrets:
-    - name: docker-auth
+    - name: ghcr-secret
 
 ingress:
   enabled: true
