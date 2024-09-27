@@ -1,21 +1,11 @@
-image:
-  repository: ghcr.io/cnych/gitops-demo
-  tag: latest
-  pullPolicy: IfNotPresent
-  imagePullSecrets:
-    - name: ghcr-secret
-
-ingress:
-  enabled: true
-  ingressClassName: higress
-  path: /
-  hosts:
-    - gitops-demo.k8s.local
-
-resources:
-  limits:
-    cpu: 50m
-    memory: 128Mi
-  requests:
-    cpu: 50m
-    memory: 128Mi
+helm:
+  parameters:
+  - name: replicaCount
+    value: "2"
+    forcestring: false
+  - name: image.name
+    value: ghcr.io/cnych/gitops-demo
+    forcestring: true
+  - name: image.tag
+    value: v0.1.0
+    forcestring: true
