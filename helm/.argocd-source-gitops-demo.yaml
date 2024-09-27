@@ -1,0 +1,11 @@
+helm:
+  parameters:
+  - name: replicaCount
+    value: "2"
+    forcestring: false
+  - name: image.name
+    value: ghcr.io/cnych/gitops-demo
+    forcestring: true
+  - name: image.tag
+    value: v0.1.1
+    forcestring: true
