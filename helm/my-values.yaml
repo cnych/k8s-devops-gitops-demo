@@ -10,7 +10,7 @@ ingress:
   ingressClassName: nginx
   path: /
   hosts:
-    - devops-demo.k8s.local
+    - gitops-demo.k8s.local
 
 resources:
   limits:
